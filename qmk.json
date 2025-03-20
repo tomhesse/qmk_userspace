@@ -1,6 +1,7 @@
 {
     "userspace_version": "1.1",
     "build_targets": [
-        ["kbdfans/odin/soldered", "tomhesse"]
+        ["kbdfans/odin/soldered", "tomhesse"],
+        ["kbdfans/kbd67/rev2", "tomhesse"]
     ]
 }
