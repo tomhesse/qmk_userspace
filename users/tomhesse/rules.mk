@@ -7,3 +7,6 @@ LTO_ENABLE = yes			# Enable link-time optimization
 # Explicitly disabled
 RGBLIGHT_ENABLE = no		# RGB underglow
 BACKLIGHT_ENABLE = no		# Keyboard backlight
+
+# Include custom source files
+SRC += mouse_jiggler.c

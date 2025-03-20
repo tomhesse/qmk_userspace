@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "mouse_jiggler.h"
 
 // Define available layers
 enum layers {
@@ -72,7 +73,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
         KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,                      KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_NO,
         KC_TRNS,  KC_NO,    KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_NO,              KC_MSTP,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
-        KC_TRNS,  KC_TRNS,  KC_TRNS,                                KC_TRNS,                                KC_NO,    KC_TRNS,  KC_NO,    KC_TRNS,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_TRNS,  KC_TRNS,  KC_NO
+        KC_TRNS,  KC_TRNS,  KC_TRNS,                                MA_JIGL,                                KC_NO,    KC_TRNS,  KC_NO,    KC_TRNS,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_TRNS,  KC_TRNS,  KC_NO
     ),
 };
 // clang-format on
+
+// Process user input
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!process_mouse_jiggler(keycode, record)) {
+        return false;
+    }
+    return true;
+}
+
+// Matrix scan function
+void matrix_scan_user(void) {
+    mouse_jiggler_matrix_scan(); // Run mouse jiggler logic
+}
+
+// Keyboard post init function
+void keyboard_post_init_user(void) {
+    // Seed the random number generator for the mouse jiggler
+    srand(timer_read());
+}
