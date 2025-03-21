@@ -15,4 +15,3 @@ enum custom_keycodes { MA_JIGL = SAFE_RANGE };
 // Function prototypes
 bool process_mouse_jiggler(uint16_t keycode, keyrecord_t *record);
 void mouse_jiggler_matrix_scan(void);
-void perform_random_mouse_jiggle(void);

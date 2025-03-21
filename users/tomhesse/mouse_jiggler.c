@@ -14,35 +14,20 @@ static mouse_jiggler_state_t mouse_jiggler = {.active    = false,
                                               .timer     = 0};
 
 // Perform a randomized mouse movement
-void perform_random_mouse_jiggle(void) {
-    uint8_t direction = rand() % 4; // Generate a random number between 0 and 3
-    switch (direction) {
-        case 0:
-            tap_code(KC_MS_LEFT);
-            break;
-        case 1:
-            tap_code(KC_MS_RIGHT);
-            break;
-        case 2:
-            tap_code(KC_MS_UP);
-            break;
-        case 3:
-            tap_code(KC_MS_DOWN);
-            break;
-    }
+static inline void perform_random_mouse_jiggle(void) {
+    static const uint8_t directions[4] = {KC_MS_LEFT, KC_MS_RIGHT, KC_MS_UP, KC_MS_DOWN};
+    tap_code(directions[rand() % 4]);
 }
 
 // Process the custom key for toggling mouse jiggler
 bool process_mouse_jiggler(uint16_t keycode, keyrecord_t *record) {
-    if (keycode == MA_JIGL) {
-        if (record->event.pressed) {
-            mouse_jiggler.active = !mouse_jiggler.active; // Toggle the jiggler
+    if (record->event.pressed) {
+        if (keycode == MA_JIGL) {
+            mouse_jiggler.active = !mouse_jiggler.active; // Toggle jiggler
+            return false;
+        } else if (mouse_jiggler.active) {
+            mouse_jiggler.active = false; // Disable jiggler on any other key press
         }
-        return false; // Skip further processing for this key
-    }
-    // Disable jiggler on other keypresses
-    if (record->event.pressed && mouse_jiggler.active) {
-        mouse_jiggler.active = false;
     }
     return true; // Continue processing other keys
 }
